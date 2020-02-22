@@ -21,8 +21,6 @@ from framework.common.torrent.process import TorrentProcess
 # 패키지
 from .plugin import logger, package_name
 from .model import ModelSetting, ModelMovieItem
-import rss
-import downloader
 
 
 #########################################################
