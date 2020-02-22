@@ -47,7 +47,7 @@
 
           {{ macros.setting_input_text('option_keyword_include', '포함 키워드', value=arg['option_keyword_include'], desc=['파일명에 이 단어가 포함되면 받습니다', '빈칸인 경우 조건을 검사하지 않습니다. 구분자 |']) }}
 
-          {{ macros.setting_input_text('option_keyword_exclude', '포함 키워드', value=arg['option_keyword_exclude'], desc=['파일명에 이 단어가 포함되면 받지 않습니다', '빈칸인 경우 조건을 검사하지 않습니다. 구분자 |']) }}
+          {{ macros.setting_input_text('option_keyword_exclude', '제외 키워드', value=arg['option_keyword_exclude'], desc=['파일명에 이 단어가 포함되면 받지 않습니다', '빈칸인 경우 조건을 검사하지 않습니다. 구분자 |']) }}
           {{ macros.setting_input_text('option_quality', '화질', value=arg['option_quality'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: sd, 720p, 1080p, 2160p, 4K']) }}
           {{ macros.setting_input_text('option_source', '소스', value=arg['option_source'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: Web, Blu-ray, Ultra HD Blu-ray']) }}
           {{ macros.setting_input_text('option_video_codec', '비디오 코덱', value=arg['option_video_codec'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: H.264, H.265']) }}
