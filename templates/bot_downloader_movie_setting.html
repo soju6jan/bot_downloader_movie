@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block content %}
+ 
+<div>
+  {{ macros.m_button_group([['global_setting_save_btn', '설정 저장']])}}
+  {{ macros.m_row_start('5') }}
+  {{ macros.m_row_end() }}
+  <nav>  
+    {{ macros.m_tab_head_start() }}
+      {{ macros.m_tab_head2('normal', '일반', true) }}
+      {{ macros.m_tab_head2('condition', '다운로드 조건', false) }}
+      {{ macros.m_tab_head2('action', '기타', false) }}
+    {{ macros.m_tab_head_end() }}
+  </nav>
+    <form id='setting' name='setting'>  
+    <div class="tab-content" id="nav-tabContent">
+
+      {{ macros.m_tab_content_start('normal', true) }}
+        {{ macros.setting_global_scheduler_button(arg['scheduler'], arg['is_running']) }}
+        
+        {{ macros.setting_input_int('interval', '스케쥴링 실행 주기', value=arg['interval'], min='1', placeholder='10', desc='minute 단위') }}
+        {{ macros.setting_checkbox('auto_start', '시작시 자동실행', value=arg['auto_start'], desc='On : 시작시 자동으로 사용 설정합니다.') }}
+      
+        {{ macros.setting_radio('telegram_invoke_action', '텔레그램 수신시', ['실행하지 않음', '스케쥴링 중에만 실행', '스케쥴링 상태가 아니더라도 실행']) }}
+        {{ macros.setting_radio('torrent_program', '토렌트 프로그램', ['Transmission', 'DownloadStation'], value=arg['torrent_program']) }}
+        {{ macros.setting_input_text('path', '다운로드 경로', value=arg['path'], desc='토렌트 프로그램에 맞는 경로를 입력해야 합니다.') }}
+        {{ macros.setting_checkbox('receive_info_send_telegram', '정보 수신시 텔레그램', value=arg['receive_info_send_telegram'], desc=['On: 토렌트 정보 수신한 내용을 텔레그램으로 발송합니다.']) }}
+        {{ macros.setting_checkbox('download_start_send_telegram', '다운 시작시 텔레그램', value=arg['download_start_send_telegram'], desc=['On: 조건에 의해 다운로드가 시작되면 텔레그램으로 알려줍니다.']) }}
+        {{ macros.setting_checkbox('sub_change_filename', '자막 파일명 변경', value=arg['sub_change_filename'], desc=['On: 자막파일명을 토렌트 대표 파일명으로 변경합니다. (확장자 제외)']) }}
+      {{ macros.m_tab_content_end() }}
+
+      {{ macros.m_tab_content_start('condition', false) }}
+        {{ macros.setting_radio('option_auto_download', '자동 다운로드', ['사용 안함(정보만 수신)', '자동 다운로드', '다운로드 조건만 체크하여 표시. Offcloud 등 타앱에서 RSS로 사용시'], value=arg['option_auto_download']) }}
+        <div id="option_auto_download_div" class="collapse">
+          {{ macros.m_hr() }}
+          {{ macros.info_text('', '1단계', value='영화 조건') }}  
+          {{ macros.setting_radio('option_meta', '메타 검색 여부', ['전체(메타 없어도 다운로드)', 'Daum', 'Daum + IMDB'], value=arg['option_meta']) }}
+          {{ macros.setting_input_text('option_target', '예상 파일처리 결과', value=arg['option_target'], desc=['예상되는 파일처리 타겟에 대한 조건입니다.', '빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: kor, kor_vod, vod, sub, imdb']) }}
+          {{ macros.setting_input_text('option_country_include', '포함 국가', value=arg['option_country_include'], desc=['국가 정보에 이 단어가 포함되면 받습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
+          {{ macros.setting_input_text('option_country_exclude', '제외 국가', value=arg['option_country_exclude'], desc=['국가 정보에 이 단어가 포함되면 받지 않습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
+          {{ macros.setting_input_int('option_year', '년도', value=arg['option_year'], desc=['이 값 이후에 출시한 영화만 받습니다.']) }}
+          {{ macros.setting_input_text('option_genre_include', '포함 장르', value=arg['option_genre_include'], desc=['대표 장르 정보에 이 단어가 포함되면 받습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
+          {{ macros.setting_input_text('option_genre_exclude', '제외 장르', value=arg['option_genre_exclude'], desc=['대표 장르 정보에 이 단어가 포함되면 받지 않습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
+          
+          {{ macros.m_hr() }}
+          {{ macros.info_text('', '2단계', value='토렌트 조건') }}  
+
+          {{ macros.setting_input_text('option_keyword_include', '포함 키워드', value=arg['option_keyword_include'], desc=['파일명에 이 단어가 포함되면 받습니다', '빈칸인 경우 조건을 검사하지 않습니다. 구분자 |']) }}
+
+          {{ macros.setting_input_text('option_keyword_exclude', '포함 키워드', value=arg['option_keyword_exclude'], desc=['파일명에 이 단어가 포함되면 받지 않습니다', '빈칸인 경우 조건을 검사하지 않습니다. 구분자 |']) }}
+          {{ macros.setting_input_text('option_quality', '화질', value=arg['option_quality'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: sd, 720p, 1080p, 2160p, 4K']) }}
+          {{ macros.setting_input_text('option_source', '소스', value=arg['option_source'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: Web, Blu-ray, Ultra HD Blu-ray']) }}
+          {{ macros.setting_input_text('option_video_codec', '비디오 코덱', value=arg['option_video_codec'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: H.264, H.265']) }}
+          {{ macros.setting_input_text('option_audio_codec', '오디오 코덱', value=arg['option_audio_codec'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: AAC, Dolby Digital, DTS, Dolby Digital Plus']) }}
+          {{ macros.setting_radio('option_sub', '자막(타겟-sub일경우)', ['전체', '자막파일이 있는 영화만'], value=arg['option_sub']) }}
+          {{ macros.setting_radio('option_plex', 'PLEX 연동', ['연동안함(중복허용)', '이미 있는 경우 받지 않음', '더 좋은 화질로 예상되는 경우 다운로드'], value=arg['option_plex']) }}
+        </div>
+      {{ macros.m_tab_content_end() }}
+      {{ macros.m_tab_content_start('action', false) }}
+        {{ macros.setting_button([['global_one_execute_btn', '1회 실행']], left='1회 실행' ) }}
+        {{ macros.setting_button([['global_reset_db_btn', '목록 전체 지우기']], left='DB정리' ) }}
+        {{ macros.info_text_and_buttons('last_id', '마지막 ID', [['reset_last_index_btn', 'ID 초기화']], value='마지막 ID : ' + arg['last_id'], desc=['DB에 저장된 Index를 지웁니다', '최초 시작처럼 7일 이내 데이터를 모두 처리합니다.']) }}
+        {{ macros.m_hr() }}
+        {{ macros.info_text_go('rss_api', 'RSS API', value=arg['rss_api'], desc=['파라미터', ' - search : 파일명 키워드. 연산자 지원', '- count : 피드 수. 기본값 100', '- option : 생략가능.', '> wait : 판단이전', '> true : 조건일치 - 요청', '> false : 조건불일치 - 패스', 'true_only_status : 조건일치 - 상태만', 'false_only_status : 조건불일치 - 상태만', 'no : 자동다운로드 사용 안함', '', '연산자', '- AND 연산자 : 구분자 ,', '- OR연산자 : 구분자 |', '']) }}
+
+      {{ macros.m_tab_content_end() }}  
+    </div><!--tab-content-->
+    </form>
+  </div><!--전체-->
+
+<script type="text/javascript">
+var package_name = "{{arg['package_name'] }}";
+var current_data = null;
+var option_auto_download = "{{arg['option_auto_download']}}"
+$(document).ready(function(){
+  if (parseInt(option_auto_download)>= 1) {
+    $('#option_auto_download_div').collapse('show')
+  }
+});
+
+$('input[type=radio][name=option_auto_download]').change(function() {
+  if (this.value == 0) {
+    $('#option_auto_download_div').collapse('hide')
+  } else {
+    $('#option_auto_download_div').collapse('show')
+  }
+});
+
+$("body").on('click', '#reset_last_index_btn', function(e){
+  e.preventDefault();
+  $.ajax({
+    url: '/' + package_name + '/ajax/reset_last_index',
+    type: "POST", 
+    cache: false,
+    data: {},
+    dataType: "json",
+    success: function (ret) {
+      if (ret) {
+        $.notify('<strong>초기화 하였습니다.</strong>', {
+          type: 'success'
+        });
+      } else {
+        $.notify('<strong>작업 시작에 실패하였습니다.</strong>', {
+          type: 'warning'
+        });
+      }
+    }
+  });
+});
+
+</script>    
+{% endblock %}
