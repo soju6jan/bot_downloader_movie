@@ -32,7 +32,8 @@ class Logic(object):
         'download_start_send_telegram' : 'False',
         'last_id' : '-1', 
         'sub_change_filename' : 'True',
-        
+        'show_log' : 'False',
+
         'option_auto_download' : '0',
         'option_meta' : '1', # 0:전체, 1:Daum, 2:Daum + IMDB
         'option_target' : '',
@@ -49,6 +50,8 @@ class Logic(object):
         'option_audio_codec' : '',
         'option_sub' : '0',
         'option_plex' : '0',
+        'option_min_size' : '0',
+        'option_max_size' : '0',
 
     }
 

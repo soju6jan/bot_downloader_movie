@@ -172,40 +172,6 @@ class LogicNormal(object):
             return False
 
     
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     
@@ -271,6 +237,8 @@ class LogicNormal(object):
                             flag_download = LogicNormal.check_option_sub(item)
                         if flag_download:
                             flag_download = LogicNormal.check_option_plex(item)
+                        if flag_download:
+                            flag_download = LogicNormal.check_option_size(item)
 
                         #다운로드
                         if flag_download:
@@ -373,6 +341,26 @@ class LogicNormal(object):
                     flag_download = True
                     log += u'Plex에 없음'
             item.log += u'15.Plex - %s : %s\n' % (log, flag_download)
+        except Exception as e: 
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+        return flag_download
+
+    # 16. option_min_size, option_max_size
+    @staticmethod
+    def check_option_size(item):
+        try:
+            flag_download = True
+            option_min_size = ModelSetting.get_int('option_min_size')
+            option_max_size = ModelSetting.get_int('option_max_size')
+            if option_min_size != 0 and item.total_size < option_min_size:
+                flag_download = False
+                item.log += u'16.최소크기 - %s : %s\n' % (item.total_size, flag_download)
+            if option_max_size != 0 and item.total_size > option_max_size:
+                flag_download = False
+                item.log += u'16.최대크기 - %s : %s\n' % (item.total_size, flag_download)
+            if flag_download:
+                item.log += u'16.크기 - %s : %s\n' % (item.total_size, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())

@@ -48,6 +48,7 @@ var current_data = null;
 var is_torrent_info_installed = ("{{arg['is_torrent_info_installed']}}" == 'True')
 var is_available_normal_download = ("{{arg['is_available_normal_download']}}" == 'True')
 var ddns = "{{arg['ddns']}}";
+var show_log = ("{{arg['show_log']}}" == 'True')
 
 $(document).ready(function(){
   request_search('1');
@@ -215,7 +216,7 @@ function make_list(data) {
         tmp += '<b>PLEX : </b>⭕ - 라이브러리 : '+data[i].plex_info.length+'개'
         for (j in data[i].plex_info)  {
           for (k in data[i].plex_info[j].media) {
-            tmp += '<br><b>' + data[i].plex_info[j].media[k].file + '</b> (' + data[i].plex_info[j].media[k].info + ')'
+            tmp += '<br><b>' + data[i].plex_info[j].media[k].file + '</b><br>(' + data[i].plex_info[j].media[k].info + ')'
           }
         }
       }
@@ -241,23 +242,16 @@ function make_list(data) {
       tmp2 = '⛔조건불일치 - 상태만'
     }
 
-    if (data[i].log != null) {
+    if (show_log && data[i].log != null) {
       tmp2 += '<pre>' + data[i].log + '</pre>'
     }
 
     tmp2 += manual
     tmp += '<b>상태 : </b>' + tmp2
-    //if (info) 
-    //  tmp += '<br><b>예상 : </b>' + data[i].json.guessit.screen_size + ' | ' + data[i].json.guessit.source + ' | ' + data[i].json.target_str
     tmp += m_hr()
     
-    
-
-    
-
-
     // 마그넷
-    tmp += '파일명 : ' + data[i].filename + '<br>'
+    tmp += '파일명 : <b>' + data[i].filename + '</b><br>'
     tmp += '크기 : ' + humanFileSize(data[i].total_size) + ' /  파일수 : ' + data[i].file_count + '<br>'
     if (data[i].guessit.screen_size != null) tmp += data[i].guessit.screen_size
     if (data[i].guessit.source != null) tmp += ' / ' + data[i].guessit.source
