@@ -317,7 +317,7 @@ class LogicNormal(object):
 
     @staticmethod
     def get_score(screen_size, source):
-        screen_size_list = {'sd':1, '720p':30, '1080p':50, '4K':100, '2160p':100}
+        screen_size_list = {'sd':1, '720':30, '1080':50, '4K':100, '2160':100}
         score = 0
         if screen_size in screen_size_list.keys():
             score += screen_size_list[screen_size]
@@ -349,7 +349,7 @@ class LogicNormal(object):
                         flag_download = False
                         log += u'소스 정보없음'
                     else:
-                        current_score = LogicNormal.get_score(item.guessit['screen_size'], item.guessit['source'])
+                        current_score = LogicNormal.get_score(item.guessit['screen_size'].replace('p', ''), item.guessit['source'])
                         if current_score == 0:
                             log += 'Plex : 세부정보 알수 없어서 제외'
                         else:
