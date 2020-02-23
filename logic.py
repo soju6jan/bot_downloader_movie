@@ -52,6 +52,7 @@ class Logic(object):
         'option_plex' : '0',
         'option_min_size' : '0',
         'option_max_size' : '0',
+        'option_rate' : '',
 
     }
 

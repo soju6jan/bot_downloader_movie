@@ -220,6 +220,8 @@ class LogicNormal(object):
                         if flag_download:
                             flag_download = LogicNormal.check_option_genre_exclude(item)
                         if flag_download:
+                            flag_download = LogicNormal.check_option_rate(item)
+                        if flag_download:
                             flag_download = LogicNormal.check_option_keyword_include(item)
                         if flag_download:
                             flag_download = LogicNormal.check_option_keyword_exclude(item)
@@ -293,7 +295,7 @@ class LogicNormal(object):
         return score
 
 
-    # 15. option_plex
+    # 16. option_plex
     @staticmethod
     def check_option_plex(item):
         try:
@@ -338,13 +340,13 @@ class LogicNormal(object):
                 else:
                     flag_download = True
                     log += u'Plex에 없음'
-            item.log += u'15.Plex - %s : %s\n' % (log, flag_download)
+            item.log += u'16.Plex - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
-    # 16. option_min_size, option_max_size
+    # 17. option_min_size, option_max_size
     @staticmethod
     def check_option_size(item):
         try:
@@ -353,18 +355,18 @@ class LogicNormal(object):
             option_max_size = ModelSetting.get_int('option_max_size')
             if option_min_size != 0 and item.total_size < option_min_size:
                 flag_download = False
-                item.log += u'16.최소크기 - %s : %s\n' % (item.total_size, flag_download)
+                item.log += u'17.최소크기 - %s : %s\n' % (item.total_size, flag_download)
             if option_max_size != 0 and item.total_size > option_max_size:
                 flag_download = False
-                item.log += u'16.최대크기 - %s : %s\n' % (item.total_size, flag_download)
+                item.log += u'17.최대크기 - %s : %s\n' % (item.total_size, flag_download)
             if flag_download:
-                item.log += u'16.크기 - %s : %s\n' % (item.total_size, flag_download)
+                item.log += u'17.크기 - %s : %s\n' % (item.total_size, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
-    # 14. option_sub
+    # 15. option_sub
     @staticmethod
     def check_option_sub(item):
         try:
@@ -378,13 +380,13 @@ class LogicNormal(object):
                 if item.sub:
                     flag_download = True
                     log += u' %s개' % len(item.sub)
-            item.log += u'14.자막 - %s : %s\n' % (log, flag_download)
+            item.log += u'15.자막 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
-    # 13. option_audio_codec
+    # 14. option_audio_codec
     @staticmethod
     def check_option_audio_codec(item):
         try:
@@ -397,13 +399,13 @@ class LogicNormal(object):
                 log = item.guessit['audio_codec']
                 if item.guessit['audio_codec'] in value:
                     flag_download = True
-            item.log += u'13.오디오 코덱 - %s : %s\n' % (log, flag_download)
+            item.log += u'14.오디오 코덱 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
-    # 12. option_video_codec
+    # 13. option_video_codec
     @staticmethod
     def check_option_video_codec(item):
         try:
@@ -416,13 +418,13 @@ class LogicNormal(object):
                 log = item.guessit['video_codec']
                 if item.guessit['video_codec'] in value:
                     flag_download = True
-            item.log += u'12.비디오 코덱 - %s : %s\n' % (log, flag_download)
+            item.log += u'13.비디오 코덱 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
-    # 11. option_source
+    # 12. option_source
     @staticmethod
     def check_option_source(item):
         try:
@@ -435,14 +437,14 @@ class LogicNormal(object):
                 log = item.guessit['source']
                 if item.guessit['source'] in value:
                     flag_download = True
-            item.log += u'11.소스 - %s : %s\n' % (log, flag_download)
+            item.log += u'12.소스 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
 
-    # 10. option_quality
+    # 11. option_quality
     @staticmethod
     def check_option_quality(item):
         try:
@@ -455,13 +457,13 @@ class LogicNormal(object):
                 log = item.guessit['screen_size']
                 if item.guessit['screen_size'] in value:
                     flag_download = True
-            item.log += u'10.화질 - %s : %s\n' % (log, flag_download)
+            item.log += u'11.화질 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
-    # 9. option_keyword_exclude
+    # 10. option_keyword_exclude
     @staticmethod
     def check_option_keyword_exclude(item):
         try:
@@ -476,13 +478,13 @@ class LogicNormal(object):
                         flag_download = False
                         match = v
                         break
-            item.log += u'9.제외 키워드 - %s : %s\n' % (match, flag_download)
+            item.log += u'10.제외 키워드 - %s : %s\n' % (match, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
-    # 8. option_keyword_include
+    # 9. option_keyword_include
     @staticmethod
     def check_option_keyword_include(item):
         try:
@@ -497,12 +499,29 @@ class LogicNormal(object):
                         flag_download = True
                         match = v
                         break
-            item.log += u'8.포함 키워드 - %s : %s\n' % (match, flag_download)
+            item.log += u'9.포함 키워드 - %s : %s\n' % (match, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
 
+
+    # 8. option_genre_exclude
+    @staticmethod
+    def check_option_rate(item):
+        try:
+            flag_download = True
+            value = ModelSetting.get_list('option_rate')
+            if value is None or item.daum_rate is None:
+                flag_download = True
+            else:
+                if item.daum_rate in value:
+                    flag_download = False
+            item.log += u'8.등급 - %s : %s\n' % (item.daum_rate, flag_download)
+        except Exception as e: 
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+        return flag_download
 
     # 7. option_genre_exclude
     @staticmethod
