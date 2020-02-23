@@ -55,8 +55,8 @@
           {{ macros.setting_input_text('option_audio_codec', '오디오 코덱', value=arg['option_audio_codec'], desc=['빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: AAC, Dolby Digital, DTS, Dolby Digital Plus']) }}
           {{ macros.setting_radio('option_sub', '자막(타겟-sub일경우)', ['전체', '자막파일이 있는 영화만'], value=arg['option_sub']) }}
           {{ macros.setting_radio('option_plex', 'PLEX 연동', ['연동안함(중복허용)', '이미 있는 경우 받지 않음', '더 좋은 화질로 예상되는 경우 다운로드'], value=arg['option_plex']) }}
-          {{ macros.setting_input_int('interval', '최소 크기', value=arg['option_min_size'], desc=['이 값 보다 작으면 받지 않습니다.', '0이면 조건을 검사하지 않습니다.', 'byte 단위']) }}
-          {{ macros.setting_input_int('interval', '최대 크기', value=arg['option_max_size'], desc=['이 값 보다 크면 받지 않습니다.', '0이면 조건을 검사하지 않습니다.', 'byte 단위']) }}
+          {{ macros.setting_input_int('option_min_size', '최소 크기', value=arg['option_min_size'], desc=['이 값 보다 작으면 받지 않습니다.', '0이면 조건을 검사하지 않습니다.', 'byte 단위']) }}
+          {{ macros.setting_input_int('option_max_size', '최대 크기', value=arg['option_max_size'], desc=['이 값 보다 크면 받지 않습니다.', '0이면 조건을 검사하지 않습니다.', 'byte 단위']) }}
         </div>
       {{ macros.m_tab_content_end() }}
       {{ macros.m_tab_content_start('action', false) }}
