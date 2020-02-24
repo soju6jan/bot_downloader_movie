@@ -393,7 +393,7 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_audio_codec')
             log = ''
-            if value is None or item.guessit is None or 'audio_codec' not in item.guessit:
+            if len(value) == 0 or item.guessit is None or 'audio_codec' not in item.guessit:
                 flag_download = True
             else:
                 log = item.guessit['audio_codec']
@@ -412,7 +412,7 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_video_codec')
             log = ''
-            if value is None or item.guessit is None or 'video_codec' not in item.guessit:
+            if len(value) == 0 or item.guessit is None or 'video_codec' not in item.guessit:
                 flag_download = True
             else:
                 log = item.guessit['video_codec']
@@ -431,7 +431,7 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_source')
             log = ''
-            if value is None or item.guessit is None or 'source' not in item.guessit:
+            if len(value) == 0 or item.guessit is None or 'source' not in item.guessit:
                 flag_download = True
             else:
                 log = item.guessit['source']
@@ -451,7 +451,7 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_quality')
             log = ''
-            if value is None or item.guessit is None or 'screen_size' not in item.guessit:
+            if len(value) == 0 or item.guessit is None or 'screen_size' not in item.guessit:
                 flag_download = True
             else:
                 log = item.guessit['screen_size']
@@ -470,7 +470,7 @@ class LogicNormal(object):
             flag_download = True
             value = ModelSetting.get_list('option_keyword_exclude')
             match = ''
-            if value is None:
+            if len(value) == 0:
                 flag_download = True
             else:
                 for v in value:
@@ -491,7 +491,7 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_keyword_include')
             match = ''
-            if value is None:
+            if len(value) == 0:
                 flag_download = True
             else:
                 for v in value:
@@ -512,7 +512,7 @@ class LogicNormal(object):
         try:
             flag_download = True
             value = ModelSetting.get_list('option_rate')
-            if value is None or item.daum_rate is None:
+            if len(value) == 0 or item.daum_rate is None:
                 flag_download = True
             else:
                 if item.daum_rate in value:
@@ -529,7 +529,7 @@ class LogicNormal(object):
         try:
             flag_download = True
             value = ModelSetting.get_list('option_genre_exclude')
-            if value is None or item.daum_genre is None:
+            if len(value) == 0 or item.daum_genre is None:
                 flag_download = True
             else:
                 if item.daum_genre in value:
@@ -546,7 +546,7 @@ class LogicNormal(object):
         try:
             flag_download = False
             value = ModelSetting.get_list('option_genre_include')
-            if value is None or item.daum_genre is None:
+            if len(value) == 0 or item.daum_genre is None:
                 flag_download = True
             else:
                 if item.daum_genre in value:
@@ -580,7 +580,7 @@ class LogicNormal(object):
         try:
             flag_download = True
             value = ModelSetting.get_list('option_country_exclude')
-            if value is None or item.daum_country is None:
+            if len(value) == 0 or item.daum_country is None:
                 flag_download = True
             else:
                 if item.daum_country in value:
@@ -597,7 +597,7 @@ class LogicNormal(object):
         try:
             flag_download = False
             value = ModelSetting.get_list('option_country_include')
-            if value is None or item.daum_country is None:
+            if len(value) == 0 or item.daum_country is None:
                 flag_download = True
             else:
                 if item.daum_country in value:

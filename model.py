@@ -111,10 +111,7 @@ class ModelSetting(db.Model):
             value = ModelSetting.get(key)
             values = [x.strip().replace(' ', '').strip() for x in value.replace('\n', '|').split('|')]
             values = Util.get_list_except_empty(values)
-            if len(values) == 0:
-                return None
-            else:
-                return values
+            return values
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
