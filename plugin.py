@@ -11,7 +11,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 # sjva 공용
 from framework.logger import get_logger
-from framework import app, db, scheduler, path_data, socketio, my_login_required
+from framework import app, db, scheduler, path_data, socketio, check_api
 from framework.util import Util
 from system.model import ModelSetting as SystemModelSetting
 from framework.common.torrent.process import TorrentProcess
@@ -106,6 +106,7 @@ def first_menu(sub):
 # For UI 
 #########################################################
 @blueprint.route('/ajax/<sub>', methods=['GET', 'POST'])
+@login_required
 def ajax(sub):
     try:
         # 설정
@@ -149,7 +150,7 @@ def ajax(sub):
         elif sub == 'add_download_sub':
             db_id = request.form['id']
             index = request.form['index']
-            ret = LogicNormal.add_download_sub(db_id, index)
+            ret = LogicNormal.add_download_sub(db_id, int(index))
             return jsonify(ret)
         elif sub == 'remove':
             ret = ModelMovieItem.remove(request.form['id'])
@@ -166,6 +167,7 @@ def ajax(sub):
 # API
 #########################################################
 @blueprint.route('/api/<sub>', methods=['GET', 'POST'])
+@check_api
 def api(sub):
     try:
         if sub == 'add_download':
