@@ -614,7 +614,7 @@ class LogicNormal(object):
         try:
             flag_download = False
             option_target = ModelSetting.get_list('option_target')
-            if option_target is None or item.movie_target is None:
+            if len(option_target) == 0  or item.movie_target is None:
                 flag_download = True
             else:
                 if item.movie_target in option_target:
