@@ -435,7 +435,7 @@ class LogicNormal(object):
                 flag_download = True
             else:
                 log = item.guessit['source']
-                if item.guessit['source'] in value:
+                if item.guessit['source'].replace(' ', '') in value:
                     flag_download = True
             item.log += u'12.소스 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
