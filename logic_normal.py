@@ -355,12 +355,12 @@ class LogicNormal(object):
             option_max_size = ModelSetting.get_int('option_max_size')
             if option_min_size != 0 and item.total_size < option_min_size:
                 flag_download = False
-                item.log += u'17.최소크기 - %s : %s\n' % (item.total_size, flag_download)
+                item.log += u'17.최소크기 - %s : %s\n' % (Util.sizeof_fmt(item.total_size, suffix='B'), flag_download)
             if option_max_size != 0 and item.total_size > option_max_size:
                 flag_download = False
-                item.log += u'17.최대크기 - %s : %s\n' % (item.total_size, flag_download)
+                item.log += u'17.최대크기 - %s : %s\n' % (Util.sizeof_fmt(item.total_size, suffix='B'), flag_download)
             if flag_download:
-                item.log += u'17.크기 - %s : %s\n' % (item.total_size, flag_download)
+                item.log += u'17.크기 - %s : %s\n' % (Util.sizeof_fmt(item.total_size, suffix='B'), flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
