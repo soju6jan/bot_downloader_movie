@@ -187,6 +187,8 @@ def api(sub):
                 if item.sub is not None:
                     for idx, sub in enumerate(item.sub):
                         url = '%s/%s/api/attach?id=%s_%s' % (SystemModelSetting.get('ddns'), package_name, item.id, idx)
+                        if SystemModelSetting.get_bool('auth_use_apikey'):
+                            url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
                         entity = {}
                         entity['title'] = sub[1]
                         entity['link'] = url

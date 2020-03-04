@@ -15,8 +15,8 @@ from guessit import guessit
 from framework import app, db, scheduler, path_app_root
 from framework.job import Job
 from framework.util import Util
-from system.logic import SystemLogic
 from framework.common.torrent.process import TorrentProcess
+from system.model import ModelSetting as SystemModelSetting
 
 # 패키지
 from .plugin import logger, package_name
@@ -42,7 +42,9 @@ class LogicNormal(object):
                         TelegramHandle.sendMessage(ret.daum_poster, mime='photo')
                         pass
                     #url = '%s/%s/api/add_download?url=%s' % (SystemLogic.get_setting_value('ddns'), package_name, ret.magnet)
-                    url = '%s/%s/api/add_download?id=%s' % (SystemLogic.get_setting_value('ddns'), package_name, ret.id)
+                    url = '%s/%s/api/add_download?id=%s' % (SystemModelSetting.get('ddns'), package_name, ret.id)
+                    if SystemModelSetting.get_bool('auth_use_apikey'):
+                        url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
                     msg += '\n➕ 다운로드 추가\n%s\n' % url
                     try:
                         if ret.movie_title is not None:
@@ -85,7 +87,7 @@ class LogicNormal(object):
                 status_str = '⛔조건불일치 - 상태만'
 
             msg += '결과 : %s\n' % status_str
-            msg += '%s/%s/list\n' % (SystemLogic.get_setting_value('ddns'), package_name)
+            msg += '%s/%s/list\n' % (SystemModelSetting.get('ddns'), package_name)
             msg += '로그\n' + item.log
             telegram_bot.TelegramHandle.sendMessage(msg)
         except Exception as e: 
@@ -160,7 +162,10 @@ class LogicNormal(object):
             if is_available_normal_download and item.sub is not None:
                 for idx, dummy in enumerate(item.sub):
                     if index == -1 or idx == index:
-                        url = '%s/%s/api/attach?id=%s_%s' % (SystemLogic.get_setting_value('ddns'), package_name, item.id, idx)
+                        url = '%s/%s/api/attach?id=%s_%s' % (SystemModelSetting.get('ddns'), package_name, item.id, idx)
+                        if SystemModelSetting.get_bool('auth_use_apikey'):
+                            url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
+
                         downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='')
                 return True
             return False
@@ -252,6 +257,8 @@ class LogicNormal(object):
                                 if is_available_normal_download and item.sub is not None:
                                     for idx, sub in enumerate(item.sub):
                                         url = '%s/%s/api/attach?id=%s_%s' % (SystemLogic.get_setting_value('ddns'), package_name, item.id, idx)
+                                        if SystemModelSetting.get_bool('auth_use_apikey'):
+                                            url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
 
                                         downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='')
                             else:
