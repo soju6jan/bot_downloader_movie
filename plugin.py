@@ -80,6 +80,8 @@ def first_menu(sub):
         arg['is_running'] = str(scheduler.is_running(package_name))
         ddns = SystemModelSetting.get('ddns')
         arg['rss_api'] = '%s/%s/api/rss' % (ddns, package_name)
+        if SystemModelSetting.get_bool('auth_use_apikey'):
+            arg['rss_api'] += '?apikey=%s' % SystemModelSetting.get('auth_apikey')
         return render_template('%s_setting.html' % package_name, sub=sub, arg=arg)
     elif sub == 'list':
         arg = {'package_name' : package_name}
