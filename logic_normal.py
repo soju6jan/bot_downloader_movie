@@ -271,6 +271,7 @@ class LogicNormal(object):
                         
                     if ModelSetting.get_bool('download_start_send_telegram'):
                         LogicNormal.send_telegram_message(item)
+                    item.download_check_time =  datetime.datetime.now()
                     db.session.add(item)
                 except Exception as e: 
                     logger.error('Exception:%s', e)
