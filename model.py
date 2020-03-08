@@ -340,9 +340,9 @@ class ModelMovieItem(db.Model):
         if option == 'wait':
             query = query.filter(ModelMovieItem.download_status == '')
         elif option == 'true':
-            query = query.filter(ModelItem.download_status.like('true%'), not_(ModelItem.download_status.like('true_only_status%')))
+            query = query.filter(ModelMovieItem.download_status.like('true%'), not_(ModelMovieItem.download_status.like('true_only_status%')))
         elif option == 'false':
-            query = query.filter(ModelItem.download_status.like('false%'), not_(ModelItem.download_status.like('false_only_status%')))
+            query = query.filter(ModelMovieItem.download_status.like('false%'), not_(ModelMovieItem.download_status.like('false_only_status%')))
         elif option == 'true_only_status':
             query = query.filter(ModelMovieItem.download_status.like('true_only_status%'))
         elif option == 'false_only_status':
