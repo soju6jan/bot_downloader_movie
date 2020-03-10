@@ -213,7 +213,8 @@ class ModelMovieItem(db.Model):
                 entity.guessit['audio_bit_rate'] = str(entity.guessit['audio_bit_rate'])
             if 'size' in entity.guessit:
                 entity.guessit['size'] = str(entity.guessit['size'])
-
+            if 'country' in entity.guessit:
+                entity.guessit['country'] = str(entity.guessit['country'])
 
             if 'm' in data:
                 entity.movie_title = data['m']['title']

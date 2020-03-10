@@ -29,7 +29,7 @@ class LogicNormal(object):
     def process_telegram_data(data):
         try:
             ret = ModelMovieItem.process_telegram_data(data)
-            logger.debug(ret)
+            logger.debug('telegram bot receive. is exist : %s', ret)
             if ret is not None:
                 if ModelSetting.get_bool('receive_info_send_telegram'):
                     msg = '😉 영화 정보 수신\n'
@@ -53,7 +53,7 @@ class LogicNormal(object):
                         logger.error(traceback.format_exc())  
 
                     import framework.common.notify as Notify
-                    Notify.send_message(msg, image_url=ret.poster, message_id='bot_downloader_movie_receive')
+                    Notify.send_message(msg, image_url=ret.daum_poster, message_id='bot_downloader_movie_receive')
                 LogicNormal.invoke()
                 TorrentProcess.receive_new_data(ret, package_name)
         except Exception, e:
