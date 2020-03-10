@@ -32,15 +32,9 @@ class LogicNormal(object):
             logger.debug(ret)
             if ret is not None:
                 if ModelSetting.get_bool('receive_info_send_telegram'):
-                    from telegram_bot import TelegramHandle
-
                     msg = '😉 영화 정보 수신\n'
                     msg += '제목 : %s (%s)\n' % (ret.movie_title, ret.movie_year)
                     msg += '파일 : %s\n' % ret.filename
-                    
-                    if ret.daum_poster is not None:
-                        TelegramHandle.sendMessage(ret.daum_poster, mime='photo')
-                        pass
                     #url = '%s/%s/api/add_download?url=%s' % (SystemLogic.get_setting_value('ddns'), package_name, ret.magnet)
                     url = '%s/%s/api/add_download?id=%s' % (SystemModelSetting.get('ddns'), package_name, ret.id)
                     if SystemModelSetting.get_bool('auth_use_apikey'):
@@ -58,8 +52,8 @@ class LogicNormal(object):
                         logger.error('Exception:%s', e)
                         logger.error(traceback.format_exc())  
 
-                    TelegramHandle.sendMessage(msg)
-
+                    import framework.common.notify as Notify
+                    Notify.send_message(msg, image_url=ret.poster, message_id='bot_downloader_movie_receive')
                 LogicNormal.invoke()
                 TorrentProcess.receive_new_data(ret, package_name)
         except Exception, e:
@@ -70,7 +64,6 @@ class LogicNormal(object):
     @staticmethod
     def send_telegram_message(item):
         try:
-            import telegram_bot
             msg = '😉 봇 다운로드 - 영화 처리결과\n'
             msg += '제목 : %s (%s)\n' % (item.movie_title, item.movie_year)
             msg += '파일 : %s\n' % item.filename
@@ -89,7 +82,9 @@ class LogicNormal(object):
             msg += '결과 : %s\n' % status_str
             msg += '%s/%s/list\n' % (SystemModelSetting.get('ddns'), package_name)
             msg += '로그\n' + item.log
-            telegram_bot.TelegramHandle.sendMessage(msg)
+            
+            import framework.common.notify as Notify
+            Notify.send_message(msg, message_id='bot_downloader_movie_result')
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
