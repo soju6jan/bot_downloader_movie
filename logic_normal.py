@@ -39,7 +39,7 @@ class LogicNormal(object):
                     url = '%s/%s/api/add_download?id=%s' % (SystemModelSetting.get('ddns'), package_name, ret.id)
                     if SystemModelSetting.get_bool('auth_use_apikey'):
                         url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
-                    msg += '\n➕ 다운로드 추가\n%s\n' % url
+                    msg += '\n➕ 다운로드 추가\n<%s>\n' % url
                     try:
                         if ret.movie_title is not None:
                             if ret.movie_target == 'imdb':
