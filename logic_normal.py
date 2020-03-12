@@ -35,7 +35,6 @@ class LogicNormal(object):
                     msg = '😉 영화 정보 수신\n'
                     msg += '제목 : %s (%s)\n' % (ret.movie_title, ret.movie_year)
                     msg += '파일 : %s\n' % ret.filename
-                    #url = '%s/%s/api/add_download?url=%s' % (SystemLogic.get_setting_value('ddns'), package_name, ret.magnet)
                     url = '%s/%s/api/add_download?id=%s' % (SystemModelSetting.get('ddns'), package_name, ret.id)
                     if SystemModelSetting.get_bool('auth_use_apikey'):
                         url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
@@ -255,7 +254,7 @@ class LogicNormal(object):
                                 is_available_normal_download = downloader.Logic.is_available_normal_download()
                                 if is_available_normal_download and item.sub is not None:
                                     for idx, sub in enumerate(item.sub):
-                                        url = '%s/%s/api/attach?id=%s_%s' % (SystemLogic.get_setting_value('ddns'), package_name, item.id, idx)
+                                        url = '%s/%s/api/attach?id=%s_%s' % (SystemModelSetting.get('ddns'), package_name, item.id, idx)
                                         if SystemModelSetting.get_bool('auth_use_apikey'):
                                             url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
 
