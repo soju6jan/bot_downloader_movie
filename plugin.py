@@ -207,11 +207,16 @@ def api(sub):
                 import requests
                 import io
                 session = requests.Session()
-                logger.debug('url : %s', entity.url)
-                logger.debug('url : %s', entity.sub[int(tmp[1])][0])
-                page = get_html(session, entity.url)
-                page = get_html(session, entity.sub[int(tmp[1])][0], referer=entity.url, stream=True)
-                
+
+                if entity.sub[int(tmp[1])][2] != 'NONE':
+                    logger.debug('url : %s', entity.sub[int(tmp[1])][2])
+                    page = get_html(session, entity.sub[int(tmp[1])][2], stream=True)
+                else:
+                    logger.debug('url : %s', entity.url)
+                    logger.debug('url : %s', entity.sub[int(tmp[1])][0])
+                    page = get_html(session, entity.url)
+                    page = get_html(session, entity.sub[int(tmp[1])][0], referer=entity.url, stream=True)
+                    
                 byteio = io.BytesIO()
                 for chunk in page.iter_content(1024):
                     byteio.write(chunk)
@@ -225,13 +230,12 @@ def api(sub):
                     if ext in ['.smi', '.srt', '.ass']:
                         attach_filename = '%s%s' % (os.path.splitext(entity.filename)[0], ext)
 
-
                 logger.debug('filename : %s', attach_filename)
-                return send_file(
-                    io.BytesIO(filedata),
-                    mimetype='application/octet-stream',
-                    as_attachment=True,
-                    attachment_filename=attach_filename)
+            return send_file(
+                io.BytesIO(filedata),
+                mimetype='application/octet-stream',
+                as_attachment=True,
+                attachment_filename=attach_filename)
 
     except Exception as e: 
         logger.error('Exception:%s', e)
