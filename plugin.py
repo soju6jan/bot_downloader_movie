@@ -207,7 +207,8 @@ def api(sub):
                 import requests
                 import io
                 session = requests.Session()
-
+                logger.debug('url : %s', entity.url)
+                logger.debug('url : %s', entity.sub[int(tmp[1])][0])
                 page = get_html(session, entity.url)
                 page = get_html(session, entity.sub[int(tmp[1])][0], referer=entity.url, stream=True)
                 
