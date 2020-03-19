@@ -47,7 +47,7 @@ var is_torrent_info_installed = ("{{arg['is_torrent_info_installed']}}" == 'True
 var is_available_normal_download = ("{{arg['is_available_normal_download']}}" == 'True')
 var ddns = "{{arg['ddns']}}";
 var show_log = ("{{arg['show_log']}}" == 'True')
-
+var apikey = "{{arg['apikey']}}";
 $(document).ready(function(){
   request_search('1');
 });
@@ -269,6 +269,8 @@ function make_list(data) {
     tmp += tmp2 + '<br>'
     for (j in data[i].sub) {
       url = ddns + '/' + package_name + '/api/attach?id=' + data[i].id + '_' + j;
+      if (apikey != '')
+        url += '&apikey=' + apikey
       tmp += '<a href="'+url + '">' + data[i].sub[j][1] + '</a><br>';
       if (is_available_normal_download) {
         tmp2 = m_button('add_download_sub_btn', '다운로드 추가', [{'key':'id', 'value':data[i].id}, {'key':'index', 'value':j}]);

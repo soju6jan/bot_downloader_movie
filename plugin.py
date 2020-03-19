@@ -97,6 +97,9 @@ def first_menu(sub):
             arg['is_available_normal_download'] = downloader.Logic.is_available_normal_download()
         except Exception as e: 
             pass
+        arg['apikey'] = ''
+        if SystemModelSetting.get_bool('auth_use_apikey'):
+            arg['apikey'] = SystemModelSetting.get('auth_apikey')
         arg['ddns'] = SystemModelSetting.get('ddns')
         arg['show_log'] = ModelSetting.get('show_log')
         return render_template('%s_list.html' % package_name, arg=arg)
