@@ -205,6 +205,9 @@ class ModelMovieItem(db.Model):
 
             from guessit import guessit
             entity.guessit = guessit(entity.filename)
+            for key, value in entity.guessit.items():
+                entity.guessit[key] = str(value)
+            """
             if 'language' in entity.guessit:
                 entity.guessit['language'] = str(entity.guessit['language'])
             if 'subtitle_language' in entity.guessit:
@@ -215,7 +218,8 @@ class ModelMovieItem(db.Model):
                 entity.guessit['size'] = str(entity.guessit['size'])
             if 'country' in entity.guessit:
                 entity.guessit['country'] = str(entity.guessit['country'])
-
+            """
+            
             if 'm' in data:
                 entity.movie_title = data['m']['title']
                 entity.movie_target = data['m']['target']
