@@ -399,12 +399,15 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_audio_codec')
             log = ''
-            if len(value) == 0 or item.guessit is None or 'audio_codec' not in item.guessit:
+            if len(value) == 0:
                 flag_download = True
             else:
-                log = item.guessit['audio_codec']
-                if item.guessit['audio_codec'] in value:
-                    flag_download = True
+                if item.guessit is None or 'audio_codec' not in item.guessit:
+                    flag_download = False
+                else:
+                    log = item.guessit['audio_codec']
+                    if item.guessit['audio_codec'] in value:
+                        flag_download = True
             item.log += u'14.오디오 코덱 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
@@ -418,12 +421,15 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_video_codec')
             log = ''
-            if len(value) == 0 or item.guessit is None or 'video_codec' not in item.guessit:
+            if len(value) == 0:
                 flag_download = True
             else:
-                log = item.guessit['video_codec']
-                if item.guessit['video_codec'] in value:
-                    flag_download = True
+                if item.guessit is None or 'video_codec' not in item.guessit:
+                    flag_download = False
+                else:
+                    log = item.guessit['video_codec']
+                    if item.guessit['video_codec'] in value:
+                        flag_download = True
             item.log += u'13.비디오 코덱 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
@@ -437,12 +443,15 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_source')
             log = ''
-            if len(value) == 0 or item.guessit is None or 'source' not in item.guessit:
+            if len(value) == 0:
                 flag_download = True
             else:
-                log = item.guessit['source']
-                if item.guessit['source'].replace(' ', '') in value:
-                    flag_download = True
+                if item.guessit is None or 'source' not in item.guessit:
+                    flag_download = False
+                else:
+                    log = item.guessit['source']
+                    if item.guessit['source'].replace(' ', '') in value:
+                        flag_download = True
             item.log += u'12.소스 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
@@ -457,12 +466,15 @@ class LogicNormal(object):
             flag_download = False
             value = ModelSetting.get_list('option_quality')
             log = ''
-            if len(value) == 0 or item.guessit is None or 'screen_size' not in item.guessit:
+            if len(value) == 0:
                 flag_download = True
             else:
-                log = item.guessit['screen_size']
-                if item.guessit['screen_size'] in value:
-                    flag_download = True
+                if item.guessit is None or 'screen_size' not in item.guessit:
+                    flag_download = False
+                else:
+                    log = item.guessit['screen_size']
+                    if item.guessit['screen_size'] in value:
+                        flag_download = True
             item.log += u'11.화질 - %s : %s\n' % (log, flag_download)
         except Exception as e: 
             logger.error('Exception:%s', e)
