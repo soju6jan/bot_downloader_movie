@@ -267,6 +267,7 @@ function make_list(data) {
 
     tmp2 = m_button_group(tmp2)
     tmp += tmp2 + '<br>'
+    tmp2 = ''
     for (j in data[i].sub) {
       url = ddns + '/' + package_name + '/api/attach?id=' + data[i].id + '_' + j;
       if (apikey != '')
