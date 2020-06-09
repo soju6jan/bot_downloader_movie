@@ -157,12 +157,6 @@ class LogicNormal(object):
             import downloader
             item = ModelMovieItem.get_by_id(db_id)
             is_available_normal_download = downloader.Logic.is_available_normal_download()
-
-
-            logger.debug('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  ')
-
-            logger.debug(db_id)
-            logger.debug(index)
             if is_available_normal_download and item.sub is not None:
                 for idx, dummy in enumerate(item.sub):
                     if index == -1 or idx == index:

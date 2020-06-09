@@ -239,7 +239,6 @@ def api(sub):
                 mimetype='application/octet-stream',
                 as_attachment=True,
                 attachment_filename=attach_filename)
-
     except Exception as e: 
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())
