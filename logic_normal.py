@@ -29,7 +29,7 @@ class LogicNormal(object):
     def process_telegram_data(data):
         try:
             ret = ModelMovieItem.process_telegram_data(data)
-            logger.debug('telegram bot receive. is exist : %s', ret)
+            #logger.debug('telegram bot receive. is exist : %s', ret)
             if ret is not None:
                 if ModelSetting.get_bool('receive_info_send_telegram'):
                     msg = '😉 영화 정보 수신\n'
