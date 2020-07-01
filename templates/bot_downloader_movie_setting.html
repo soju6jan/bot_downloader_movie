@@ -39,7 +39,8 @@
           {{ macros.setting_input_text('option_target', '예상 파일처리 결과', value=arg['option_target'], desc=['예상되는 파일처리 타겟에 대한 조건입니다.', '빈칸인 경우 조건을 검사하지 않습니다. 구분자 |', '지원: kor, kor_vod, vod, sub, imdb']) }}
           {{ macros.setting_input_text('option_country_include', '포함 국가', value=arg['option_country_include'], desc=['국가 정보에 이 단어가 포함되면 받습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
           {{ macros.setting_input_text('option_country_exclude', '제외 국가', value=arg['option_country_exclude'], desc=['국가 정보에 이 단어가 포함되면 받지 않습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
-          {{ macros.setting_input_int('option_year', '년도', value=arg['option_year'], desc=['이 값 이후에 출시한 영화만 받습니다.']) }}
+          {{ macros.setting_input_int('option_year', '최소 년도', value=arg['option_year'], desc=['영화 년도가 이 값 이상인 경우 받습니다.']) }}
+          {{ macros.setting_input_int('option_year_before', '최대 년도', value=arg['option_year_before'], desc=['영화 년도가 이 값 이하인 경우 받습니다.']) }}
           {{ macros.setting_input_text('option_genre_include', '포함 장르', value=arg['option_genre_include'], desc=['대표 장르 정보에 이 단어가 포함되면 받습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
           {{ macros.setting_input_text('option_genre_exclude', '제외 장르', value=arg['option_genre_exclude'], desc=['대표 장르 정보에 이 단어가 포함되면 받지 않습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |']) }}
           {{ macros.setting_input_text('option_rate', '제외 등급', value=arg['option_rate'], desc=['이 값과 등급이 일치하면 받지 않습니다.', '빈칸이거나 Daum 메타가 아닌 경우 조건을 검사하지 않습니다. 구분자 |', '전체관람가, 12세이상관람가, 15세이상관람가, 청소년관람불가']) }}

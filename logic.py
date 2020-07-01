@@ -40,6 +40,7 @@ class Logic(object):
         'option_country_include' : '',
         'option_country_exclude' : '',
         'option_year' : '2000',
+        'option_year_before' : '2100',
         'option_genre_include' : '',
         'option_genre_exclude' : '',
         'option_keyword_include' : '',

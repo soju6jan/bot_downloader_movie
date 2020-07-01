@@ -581,10 +581,11 @@ class LogicNormal(object):
         try:
             flag_download = False
             value = ModelSetting.get_int('option_year')
+            value2 = ModelSetting.get_int('option_year_before')
             if value == '' or item.movie_year is None:
                 flag_download = True
             else:
-                if item.movie_year >= value:
+                if item.movie_year >= value and item.movie_year <= value2:
                     flag_download = True
             item.log += u'5.년도 - %s : %s\n' % (item.movie_year, flag_download)
         except Exception as e: 
