@@ -247,25 +247,18 @@ class LogicNormal(object):
                         if flag_download:
                             if option_auto_download == '1':
                                 import downloader
-                                logger.debug('download start')
                                 downloader_item_id = downloader.Logic.add_download2(item.magnet, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='')['downloader_item_id']
-                                logger.debug('downloader_item_id : %s', downloader_item_id)
                                 item.downloader_item_id = downloader_item_id
                                 item.download_status = 'true'
 
-                                logger.debug('1111')
                                 is_available_normal_download = downloader.Logic.is_available_normal_download()
                                 if is_available_normal_download and item.sub is not None:
                                     for idx, sub in enumerate(item.sub):
-                                        logger.debug('2222')
                                         url = '%s/%s/api/attach?id=%s_%s' % (SystemModelSetting.get('ddns'), package_name, item.id, idx)
                                         if SystemModelSetting.get_bool('auth_use_apikey'):
                                             url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
 
-                                        logger.debug('3333')
                                         downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='')
-                                        logger.debug('44444')
-                                logger.debug('55555')
                             else:
                                 item.download_status = 'true_only_status'
                         else:
@@ -273,7 +266,7 @@ class LogicNormal(object):
                                 item.download_status = 'false'
                             else:
                                 item.download_status = 'false_only_status'
-                        logger.debug('AAAAAAAAAAAAAAAAAAAAAAAAAA')
+                        
                     if ModelSetting.get_bool('download_start_send_telegram'):
                         LogicNormal.send_telegram_message(item)
                     item.download_check_time =  datetime.datetime.now()
