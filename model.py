@@ -315,7 +315,8 @@ class ModelMovieItem(db.Model):
             count = req.args.get('count')
             if count is None or count == '':
                 count = 100
-            query = ModelMovieItem.make_query(option=option, search=search)
+            server_id_mod = req.args.get('server_id_mod')
+            query = ModelMovieItem.make_query(option=option, search=search, server_id_mod=server_id_mod)
             query = (query.order_by(desc(ModelMovieItem.id))
                 .limit(count)
             )
@@ -326,7 +327,7 @@ class ModelMovieItem(db.Model):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def make_query(search='', option='all', order='desc'):
+    def make_query(search='', option='all', order='desc', server_id_mod=None):
         query = db.session.query(ModelMovieItem)
         if search is not None and search != '':
             if search.find('|') != -1:
@@ -362,6 +363,11 @@ class ModelMovieItem(db.Model):
             query = query.order_by(desc(ModelMovieItem.id))
         else:
             query = query.order_by(ModelMovieItem.id)
+
+        if server_id_mod is not None and server_id_mod != '':
+            tmp = server_id_mod.split('_')
+            if len(tmp) == 2:
+                query = query.filter(ModelBotDownloaderKtvItem.server_id % int(tmp[0]) == int(tmp[1]))
 
         return query
 
