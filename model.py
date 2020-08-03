@@ -169,6 +169,8 @@ class ModelMovieItem(db.Model):
 
     plex_info = db.Column(db.JSON)
     
+    # 2 버전 추가
+    server_id = db.Column(db.Integer)
 
     def __init__(self):
         self.created_time = datetime.now()
@@ -193,6 +195,7 @@ class ModelMovieItem(db.Model):
             if entity is not None:
                 return
             entity =  ModelMovieItem()
+            entity.server_id = data['server_id']
             entity.data = data
 
             entity.name = data['t']['name']
