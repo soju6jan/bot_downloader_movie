@@ -138,7 +138,7 @@ class LogicNormal(object):
         try:
             import downloader
             item = ModelMovieItem.get_by_id(db_id)
-            downloader_item_id = downloader.Logic.add_download2(item.magnet, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='')['downloader_item_id']
+            downloader_item_id = downloader.Logic.add_download2(item.magnet, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id=item.server_id)['downloader_item_id']
             item.downloader_item_id = downloader_item_id
             item.download_status = item.download_status.replace('|manual', '')
             item.download_status = '%s|manual' % item.download_status
@@ -247,7 +247,7 @@ class LogicNormal(object):
                         if flag_download:
                             if option_auto_download == '1':
                                 import downloader
-                                downloader_item_id = downloader.Logic.add_download2(item.magnet, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='')['downloader_item_id']
+                                downloader_item_id = downloader.Logic.add_download2(item.magnet, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id=item.server_id)['downloader_item_id']
                                 item.downloader_item_id = downloader_item_id
                                 item.download_status = 'true'
 
@@ -258,7 +258,7 @@ class LogicNormal(object):
                                         if SystemModelSetting.get_bool('auth_use_apikey'):
                                             url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
 
-                                        downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='')
+                                        downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id=item.server_id)
                             else:
                                 item.download_status = 'true_only_status'
                         else:
