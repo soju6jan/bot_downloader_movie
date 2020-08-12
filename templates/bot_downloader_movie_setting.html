@@ -59,7 +59,7 @@
           {{ macros.setting_radio('option_plex', 'PLEX 연동', ['연동안함(중복허용)', '이미 있는 경우 받지 않음', '더 좋은 화질로 예상되는 경우 다운로드'], value=arg['option_plex']) }}
           {{ macros.setting_input_int('option_min_size', '최소 크기', value=arg['option_min_size'], desc=['이 값 보다 작으면 받지 않습니다.', '0이면 조건을 검사하지 않습니다.', 'byte 단위']) }}
           {{ macros.setting_input_int('option_max_size', '최대 크기', value=arg['option_max_size'], desc=['이 값 보다 크면 받지 않습니다.', '0이면 조건을 검사하지 않습니다.', 'byte 단위']) }}
-         
+          {{ macros.setting_input_text('option_server_id_mod', 'server_id_mod', col=3, value=arg['option_server_id_mod'], desc=['형식: 나눌 숫자_몫. 예) 3_1 : 3으로 나누어서 몫이 1인 것만 받을 경우', '여러 기기에서 분할하여 받을 경우 사용하며 값이 비어있으면 검사하지 않습니다.']) }}
         </div>
       {{ macros.m_tab_content_end() }}
       {{ macros.m_tab_content_start('action', false) }}

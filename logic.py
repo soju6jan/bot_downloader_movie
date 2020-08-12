@@ -54,6 +54,7 @@ class Logic(object):
         'option_min_size' : '0',
         'option_max_size' : '0',
         'option_rate' : '',
+        'option_server_id_mod' : '',
 
     }
 

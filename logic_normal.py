@@ -242,6 +242,8 @@ class LogicNormal(object):
                             flag_download = LogicNormal.check_option_plex(item)
                         if flag_download:
                             flag_download = LogicNormal.check_option_size(item)
+                        if flag_download:
+                            flag_download = LogicNormal.check_option_server_id_mod(item)
 
                         #다운로드
                         if flag_download:
@@ -289,6 +291,28 @@ class LogicNormal(object):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
+
+    # 17. server_id_mod
+    @staticmethod
+    def check_option_server_id_mod(item):
+        try:
+            server_id_mod = ModelSetting.get('option_server_id_mod')
+            if server_id_mod == '':
+                return True
+            else:
+                tmp = server_id_mod.split('_')
+                if item.server_id % int(tmp[0]) == int(tmp[1]):
+                    item.log += u'\n17. server_id_mod 조건 일치. 다운:on. server_id:%s 조건:%s' % (item.server_id, server_id_mod)
+                    return True
+                else:
+                    item.download_status = 'False_server_id_mod'  
+                    item.log += u'\n17. server_id_mod 조건 불일치. 다운:Off. server_id:%s 조건:%s' % (item.server_id, server_id_mod)
+                    return False
+        except Exception as e: 
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+        return True
+    
     @staticmethod
     def get_score(screen_size, source):
         screen_size_list = {'sd':1, '720':30, '1080':50, '4K':100, '2160':100}
@@ -300,6 +324,7 @@ class LogicNormal(object):
             score += source_list[source]
         return score
 
+    
 
     # 16. option_plex
     @staticmethod
