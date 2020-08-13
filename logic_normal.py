@@ -302,11 +302,11 @@ class LogicNormal(object):
             else:
                 tmp = server_id_mod.split('_')
                 if item.server_id % int(tmp[0]) == int(tmp[1]):
-                    item.log += u'\n17. server_id_mod 조건 일치. 다운:on. server_id:%s 조건:%s' % (item.server_id, server_id_mod)
+                    item.log += u'18.server_id_mod - %s(%s) : True\n' % (item.server_id, server_id_mod)
                     return True
                 else:
                     item.download_status = 'False_server_id_mod'  
-                    item.log += u'\n17. server_id_mod 조건 불일치. 다운:Off. server_id:%s 조건:%s' % (item.server_id, server_id_mod)
+                    item.log += u'18.server_id_mod - %s(%s) : False\n' % (item.server_id, server_id_mod)
                     return False
         except Exception as e: 
             logger.error('Exception:%s', e)
