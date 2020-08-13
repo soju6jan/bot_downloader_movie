@@ -192,8 +192,13 @@ class ModelMovieItem(db.Model):
         try:
             magnet = 'magnet:?xt=urn:btih:' + data['t']['hash']
             entity = db.session.query(ModelMovieItem).filter_by(magnet=magnet).first()
+            
             if entity is not None:
-                return
+                if 's' not in data: # 새로받은게 자막이 없다면
+                    return
+                if entity.sub is not None: # 새로받은게 자막이 있지만, 기존것도 자막이 있다면
+                    return
+                    
             entity =  ModelMovieItem()
             entity.server_id = data['server_id']
             entity.data = data
