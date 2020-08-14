@@ -164,7 +164,7 @@ class LogicNormal(object):
                         if SystemModelSetting.get_bool('auth_use_apikey'):
                             url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
 
-                        downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id='%s_%s_%s' % (item.server_id, item.file_count, item.total_size) )
+                        downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id='%s_%s_%s' % (item.server_id, item.file_count, item.total_size), magnet=item.magnet )
                 return True
             return False
         except Exception as e:
