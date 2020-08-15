@@ -305,7 +305,7 @@ class LogicNormal(object):
                     item.log += u'18.server_id_mod - %s(%s) : True\n' % (item.server_id, server_id_mod)
                     return True
                 else:
-                    item.download_status = 'False_server_id_mod'  
+                    item.download_status = 'false_server_id_mod'  
                     item.log += u'18.server_id_mod - %s(%s) : False\n' % (item.server_id, server_id_mod)
                     return False
         except Exception as e: 
@@ -689,4 +689,59 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
         return flag_download
 
+
+    @staticmethod
+    def share_copy(req):
+        try:
+            import downloader
+            db_id = req.form['id']
+            item = db.session.query(ModelMovieItem).filter_by(id=db_id).with_for_update().first()
+
+            try:
+                from gd_share_client.logic_user import LogicUser
+            except:
+                return {'ret':'fail', 'log':u'구글 드라이브 공유 플러그인이 설치되어 있지 않습니다.'}
+            my_remote_path = ModelSetting.get('remote_path')
+            if my_remote_path == '':
+                return {'ret':'fail', 'log':u'리모트 경로가 설정되어 있지 않습니다.'}
+            
+            # 백그라운드
+            ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path)
+            item.download_status = 'true_manual_gdrive_share'
+            item.share_copy_time = datetime.datetime.now()
+            db.session.commit()
+            return {'ret':'success'}
+        except Exception as e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
     
+    @staticmethod
+    def process_gd(item):
+        try:
+            #{{ macros.setting_radio('share_receive_option', '구드공 데이터 활용', ['Nothing', '다운로드 조건에 상관없이 모두 다운로드', '다운로드 조건만 체크 옵션일 경우 조건에 일치하면 즉시 다운로드', '자동 자동로드 모드. 지연시간 이후 다운로드 시도시 구드공 데이터가 있을 경우 구드공으로 다운로드'], value=arg['share_receive_option']) }}
+            share_receive_option = ModelSetting.get('share_receive_option')
+            if share_receive_option == '0':
+                pass
+            try:
+                from gd_share_client.logic_user import LogicUser
+            except:
+                return
+            my_remote_path = ModelSetting.get('remote_path')
+            # 2020-08-10 너무 빨리 호출되면 rclone 탐색이 실패하는건가?
+            if share_receive_option == '1':
+                time.sleep(60)
+                ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path)
+                item.download_status = 'true_gdrive_share'
+                item.share_copy_time = datetime.datetime.now()
+                item.save()
+            elif share_receive_option == '2':
+                if item.download_status == 'true_only_status':
+                    time.sleep(60)
+                    ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path)
+                    item.download_status = 'true_gdrive_share'
+                    item.share_copy_time = datetime.datetime.now()
+                    item.save()
+            logger.debug('Folderid:%s', item.folderid)
+        except Exception as e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())

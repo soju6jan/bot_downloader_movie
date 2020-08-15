@@ -112,6 +112,27 @@ $("body").on('click', '#add_download_btn', function(e) {
   });
 });
 
+$("body").on('click', '#share_copy_btn', function(e) {
+  e.preventDefault();
+  id = $(this).data('id');
+  $.ajax({
+    url: '/'+package_name+'/ajax/share_copy',
+    type: "POST", 
+    cache: false,
+    data: {id:id},
+    dataType: "json",
+    success: function (data) {
+      if (data.ret == 'success') {
+        //command_modal_show('');
+      } else {
+        $.notify('<strong>'+data.log+'</strong>', {
+          type: 'warning'
+        });
+      }
+    }
+  });
+});
+
 $("body").on('click', '#add_download_sub_btn', function(e) {
   e.preventDefault();
   id = $(this).data('id');
@@ -275,6 +296,9 @@ function make_list(data) {
       tmp += '<a href="'+url + '">' + data[i].sub[j][1] + '</a><br>';
       if (is_available_normal_download) {
         tmp2 = m_button('add_download_sub_btn', '다운로드 추가', [{'key':'id', 'value':data[i].id}, {'key':'index', 'value':j}]);
+        if (data[i].folderid != null) {
+          tmp += m_button2('share_copy_btn', '구글 드라이브 공유 복사',  [{'key':'id', 'value':data[i].id}], 'danger');
+        }
         tmp2 += m_button('global_offcloud_add_btn', 'Offcloud 추가', [{'key':'hash', 'value':data[i].magnet}]);
         tmp2 = m_button_group(tmp2)
       }
@@ -289,6 +313,12 @@ function make_list(data) {
     if (data[i].download_check_time != null) {
       tmp += '<br>' + data[i].download_check_time + ' (다운여부 판단)'
     } 
+    if (data[i].folderid_time != null) {
+      tmp += '<br>' + data[i].folderid_time + ' (구드공 수신)'
+    }
+    if (data[i].share_copy_time != null) {
+      tmp += '<br>' + data[i].share_copy_time + ' (구드공 요청)'
+    }
     if (data[i].downloader_item != null) {
       tmp += '<br>' + data[i].downloader_item.created_time + ' (다운로드 요청)'
       if (data[i].downloader_item.completed_time != '') {
