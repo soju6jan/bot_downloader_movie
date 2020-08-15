@@ -285,7 +285,9 @@ function make_list(data) {
     tmp2 += m_button('global_offcloud_cache_confirm_btn', 'Offcloud 캐쉬확인', [{'key':'hash', 'value':data[i].magnet}]);
     if (is_torrent_info_installed) 
       tmp2 += m_button('global_torrent_info_btn', 'TorrentInfo', [{'key':'hash', 'value':data[i].magnet}]);
-
+    if (data[i].folderid != null) {
+      tmp2 += m_button2('share_copy_btn', '구글 드라이브 공유 복사',  [{'key':'id', 'value':data[i].id}], 'danger');
+    }
     tmp2 = m_button_group(tmp2)
     tmp += tmp2 + '<br>'
     tmp2 = ''
@@ -296,9 +298,6 @@ function make_list(data) {
       tmp += '<a href="'+url + '">' + data[i].sub[j][1] + '</a><br>';
       if (is_available_normal_download) {
         tmp2 = m_button('add_download_sub_btn', '다운로드 추가', [{'key':'id', 'value':data[i].id}, {'key':'index', 'value':j}]);
-        if (data[i].folderid != null) {
-          tmp += m_button2('share_copy_btn', '구글 드라이브 공유 복사',  [{'key':'id', 'value':data[i].id}], 'danger');
-        }
         tmp2 += m_button('global_offcloud_add_btn', 'Offcloud 추가', [{'key':'hash', 'value':data[i].magnet}]);
         tmp2 = m_button_group(tmp2)
       }

@@ -725,6 +725,7 @@ class LogicNormal(object):
             try:
                 from gd_share_client.logic_user import LogicUser
             except:
+                logger.debug('not installed.. rclone expand')
                 return
             my_remote_path = ModelSetting.get('remote_path')
             # 2020-08-10 너무 빨리 호출되면 rclone 탐색이 실패하는건가?
