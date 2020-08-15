@@ -55,7 +55,9 @@ class Logic(object):
         'option_max_size' : '0',
         'option_rate' : '',
         'option_server_id_mod' : '',
-
+        # 구드공 연동
+        'remote_path' : '',
+        'share_receive_option' : '0',
     }
 
     @staticmethod
