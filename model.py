@@ -421,7 +421,8 @@ class ModelMovieItem(db.Model):
                 db.session.commit()
                 from .logic_normal import LogicNormal
                 LogicNormal.process_gd(entity)
-            return True
+                return True
+            return False
         except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
