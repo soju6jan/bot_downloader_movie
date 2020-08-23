@@ -138,7 +138,7 @@ class LogicNormal(object):
         try:
             import downloader
             item = ModelMovieItem.get_by_id(db_id)
-            downloader_item_id = downloader.Logic.add_download2(item.magnet, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id='%s_%s_%s' % (item.server_id, item.file_count, item.total_size) )['downloader_item_id']
+            downloader_item_id = downloader.Logic.add_download2(item.magnet, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id='movie_%s_%s_%s' % (item.server_id, item.file_count, item.total_size) )['downloader_item_id']
             item.downloader_item_id = downloader_item_id
             item.download_status = item.download_status.replace('|manual', '')
             item.download_status = '%s|manual' % item.download_status
