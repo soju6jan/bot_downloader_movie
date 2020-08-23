@@ -358,7 +358,7 @@ class ModelMovieItem(db.Model):
                         query = query.filter(ModelMovieItem.filename.like('%'+tt.strip()+'%'))
             else:
                 query = query.filter(or_(ModelMovieItem.filename.like('%'+search+'%'), ModelMovieItem.movie_title.like('%'+search+'%')))
-
+        
         
         if option == 'wait':
             query = query.filter(ModelMovieItem.download_status == '')
