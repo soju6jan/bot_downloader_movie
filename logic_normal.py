@@ -260,7 +260,7 @@ class LogicNormal(object):
                                         if SystemModelSetting.get_bool('auth_use_apikey'):
                                             url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
 
-                                        downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id='movie_%s_%s_%s' % (item.server_id, item.file_count, item.total_size))
+                                        downloader.Logic.add_download2(url, ModelSetting.get('torrent_program'), ModelSetting.get('path'), request_type=package_name, request_sub_type='', server_id='movie_%s_%s_%s' % (item.server_id, item.file_count, item.total_size), magnet=item.magnet)
                             else:
                                 item.download_status = 'true_only_status'
                         else:
