@@ -259,6 +259,8 @@ function make_list(data) {
       tmp2 = '✔조건일치 - 상태만'
     } else if (data[i].download_status == 'false_only_status') {
       tmp2 = '⛔조건불일치 - 상태만'
+    } else {
+      tmp2 = data[i].download_status;
     }
 
     if (show_log && data[i].log != null) {
