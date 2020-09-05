@@ -176,12 +176,14 @@ class LogicNormal(object):
 
 
     
-
-
+    @staticmethod
+    def scheduler_function():
+        LogicNormal.scheduler_function_torrent_check()
+        LogicNormal.scheduler_function_share_retry()
     
 
     @staticmethod
-    def scheduler_function():
+    def scheduler_function_torrent_check():
         try:
             last_id = ModelSetting.get_int('last_id')
             flag_first = False
@@ -292,7 +294,7 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
 
-    # 17. server_id_mod
+    # 18. server_id_mod
     @staticmethod
     def check_option_server_id_mod(item):
         try:
@@ -325,7 +327,6 @@ class LogicNormal(object):
         return score
 
     
-
     # 16. option_plex
     @staticmethod
     def check_option_plex(item):
@@ -483,7 +484,6 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
         return flag_download
 
-
     # 11. option_quality
     @staticmethod
     def check_option_quality(item):
@@ -547,7 +547,6 @@ class LogicNormal(object):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         return flag_download
-
 
     # 8. option_genre_exclude
     @staticmethod
@@ -689,7 +688,9 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
         return flag_download
 
-
+    #########################################################
+    # 구드공 관련
+    #########################################################
     @staticmethod
     def share_copy(req):
         try:
@@ -706,7 +707,7 @@ class LogicNormal(object):
                 return {'ret':'fail', 'log':u'리모트 경로가 설정되어 있지 않습니다.'}
             
             # 백그라운드
-            ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path)
+            ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path, callback=ModelMovieItem.set_gdrive_share_completed, callback_id=item.id, show_modal=True)
             item.download_status = 'true_manual_gdrive_share'
             item.share_copy_time = datetime.datetime.now()
             db.session.commit()
@@ -728,21 +729,25 @@ class LogicNormal(object):
                 logger.debug('not installed.. rclone expand')
                 return
             my_remote_path = ModelSetting.get('remote_path')
-            # 2020-08-10 너무 빨리 호출되면 rclone 탐색이 실패하는건가?
-            if share_receive_option == '1':
-                time.sleep(60)
-                ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path)
+            if my_remote_path == '':
+                return
+            if share_receive_option == '1' or (share_receive_option == '2' and item.download_status == 'true_only_status'):
+                ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path, callback=ModelMovieItem.set_gdrive_share_completed, callback_id=item.id)
                 item.download_status = 'true_gdrive_share'
                 item.share_copy_time = datetime.datetime.now()
                 item.save()
-            elif share_receive_option == '2':
-                if item.download_status == 'true_only_status':
-                    time.sleep(60)
-                    ret = LogicUser.torrent_copy(item.folderid, '', '', my_remote_path=my_remote_path)
-                    item.download_status = 'true_gdrive_share'
-                    item.share_copy_time = datetime.datetime.now()
-                    item.save()
-            logger.debug('Folderid:%s', item.folderid)
         except Exception as e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def scheduler_function_share_retry():
+        try:
+            item_list = ModelMovieItem.get_share_incompleted_list()
+            logger.debug('scheduler_function_share_retry : %s', len(item_list))
+            for item in item_list:
+                LogicNormal.process_gd(item)
+                time.sleep(10)
+        except Exception as e: 
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())

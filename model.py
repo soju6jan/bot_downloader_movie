@@ -2,7 +2,7 @@
 #########################################################
 # python
 import traceback
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import os
 
@@ -20,7 +20,7 @@ from downloader import ModelDownloaderItem
 
 app.config['SQLALCHEMY_BINDS'][package_name] = 'sqlite:///%s' % (os.path.join(path_app_root, 'data', 'db', '%s.db' % package_name))
 #########################################################
-        
+      
 class ModelSetting(db.Model):
     __tablename__ = '%s_setting' % package_name
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
@@ -379,6 +379,15 @@ class ModelMovieItem(db.Model):
             query = query.filter(ModelMovieItem.download_status.like('false_only_status%'))
         elif option == 'no':
             query = query.filter(ModelMovieItem.download_status.like('no%'))
+        elif option == 'share_received':
+            query = query.filter(ModelMovieItem.folderid != None)
+        elif option == 'share_no_received':
+            query = query.filter(ModelMovieItem.folderid == None)
+        elif option == 'share_request_incompleted':
+            query = query.filter(ModelMovieItem.share_copy_time != None).filter(ModelMovieItem.share_copy_complete_time == None)
+        elif option == 'share_request_completed':
+            query = query.filter(ModelMovieItem.share_copy_time != None).filter(ModelMovieItem.share_copy_complete_time != None)
+
 
         if order == 'desc':
             query = query.order_by(desc(ModelMovieItem.id))
@@ -436,3 +445,22 @@ class ModelMovieItem(db.Model):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
             return False
+
+    @classmethod
+    def set_gdrive_share_completed(cls, id):
+        entity = cls.get_by_id(id)
+        if entity is not None:
+            entity.share_copy_complete_time = datetime.now()
+            entity.download_status = 'true_gdrive_share_completed'
+            entity.save()
+            logger.debug('true_gdrive_share_completed %s', id)
+
+    @classmethod
+    def get_share_incompleted_list(cls):
+        #수동인 True_manual_gdrive_share과 분리 \
+        #            .filter(cls.download_status == 'true_gdrive_share')  \
+        query = db.session.query(cls) \
+            .filter(cls.share_copy_time != None).filter() \
+            .filter(cls.share_copy_time > datetime.now() + timedelta(days=-1)) \
+            .filter(cls.share_copy_complete_time == None)
+        return query.all()           
