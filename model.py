@@ -207,7 +207,12 @@ class ModelMovieItem(db.Model):
     def process_telegram_data(data):
         try:
             magnet = 'magnet:?xt=urn:btih:' + data['t']['hash']
-            entity = db.session.query(ModelMovieItem).filter_by(magnet=magnet).first()
+            #entity = db.session.query(ModelMovieItem).filter_by(magnet=magnet).first()
+            entity = db.session.query(ModelMovieItem).filter_by(magnet=magnet).all()
+            if len(entity) == 0:
+                entity = None
+            else:
+                entity = entity[-1]
             
             if entity is not None:
                 if 's' not in data: # 새로받은게 자막이 없다면
