@@ -691,7 +691,8 @@ class LogicNormal(object):
     #########################################################
     # 구드공 관련
     #########################################################
-    def add_copy(self, item):
+    @staticmethod
+    def add_copy(item):
         try:
             from gd_share_client.logic_user import LogicUser
         except:
@@ -712,7 +713,7 @@ class LogicNormal(object):
             my_remote_path = ModelSetting.get('remote_path')
             if my_remote_path == '':
                 return {'ret':'fail', 'log':u'리모트 경로가 설정되어 있지 않습니다.'}
-            ret = self.add_copy(item)
+            ret = LogicNormal.add_copy(item)
             if ret['ret'] == 'success':
                 item.download_status = 'true_manual_gdrive_share'
                 item.share_copy_time = datetime.datetime.now()
