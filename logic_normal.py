@@ -738,6 +738,7 @@ class LogicNormal(object):
             if my_remote_path == '':
                 return
             if share_receive_option == '1' or (share_receive_option == '2' and item.download_status == 'true_only_status'):
+                ret = LogicNormal.add_copy(item)
                 if ret['ret'] == 'success':
                     item.download_status = 'true_gdrive_share'
                     item.share_copy_time = datetime.datetime.now()
