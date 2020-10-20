@@ -34,9 +34,9 @@ from .logic_normal import LogicNormal
 blueprint = Blueprint(package_name, package_name, url_prefix='/%s' %  package_name, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
 menu = {
-    'main' : [package_name, '봇 다운로드 - 영화'],
+    'main' : [package_name, u'봇 다운로드 - 영화'],
     'sub' : [
-        ['setting', '설정'], ['list', '목록'], ['log', '로그']
+        ['setting', u'설정'], ['list', u'목록'], ['log', u'로그']
     ],
     'category' : 'torrent'
 }
@@ -46,7 +46,7 @@ plugin_info = {
     'name' : 'bot_downloader_movie',
     'category_name' : 'torrent',
     'developer' : 'soju6jan',
-    'description' : '텔레그램 봇으로 수신한 정보로 영화 다운로드',
+    'description' : u'텔레그램 봇으로 수신한 정보로 영화 다운로드',
     'home' : 'https://github.com/soju6jan/bot_downloader_movie',
     'more' : '',
 }
@@ -145,7 +145,7 @@ def ajax(sub):
             try:
                 import plex
                 ret['plex_server_hash'] = plex.Logic.get_server_hash()
-            except Exception, e:
+            except Exception as e:
                 logger.error('not import plex')
             return jsonify(ret)
         elif sub == 'add_download':
@@ -261,7 +261,7 @@ def get_html(session, url, referer=None, stream=False):
         page_content = session.get(url, headers=headers, stream=stream, verify=False)
         if stream:
             return page_content
-        data = page_content.content
+        data = page_content.text
         #logger.debug(data)
     except Exception as e:
         logger.error('Exception:%s', e)
