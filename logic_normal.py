@@ -9,7 +9,6 @@ import time
 # third-party
 from sqlalchemy import desc
 from sqlalchemy import or_, and_, func, not_
-from guessit import guessit
 
 # sjva 공용
 from framework import app, db, scheduler, path_app_root
@@ -18,6 +17,11 @@ from framework.util import Util
 from framework.common.torrent.process import TorrentProcess
 from system.model import ModelSetting as SystemModelSetting
 
+try:
+    from guessit import guessit
+except:
+    os.system('{pip} install guessit'.format(app.config['config']['pip']))
+    from guessit import guessit
 # 패키지
 from .plugin import logger, package_name
 from .model import ModelSetting, ModelMovieItem
