@@ -14,7 +14,6 @@ from sqlalchemy import or_, and_, func, not_
 from framework import app, db, scheduler, path_app_root, SystemModelSetting
 from framework.job import Job
 from framework.util import Util
-from framework.common.torrent.process import TorrentProcess
 from tool_base import ToolBaseNotify
 try:
     from guessit import guessit
@@ -41,7 +40,7 @@ class LogicNormal(object):
                     url = '%s/%s/api/add_download?id=%s' % (SystemModelSetting.get('ddns'), package_name, ret.id)
                     if SystemModelSetting.get_bool('auth_use_apikey'):
                         url += '&apikey=%s' % SystemModelSetting.get('auth_apikey')
-                    if app.config['config']['is_sjva_server']:
+                    if app.config['config']['is_server']:
                         msg += '\n' + ret.magnet + '\n'
                     else:
                         msg += '\n➕ 다운로드 추가\n<%s>\n' % url
@@ -59,7 +58,12 @@ class LogicNormal(object):
                         logger.error(traceback.format_exc())  
                     ToolBaseNotify.send_message(msg, image_url=ret.daum_poster, message_id='bot_downloader_movie_receive')
                 LogicNormal.invoke()
-                TorrentProcess.receive_new_data(ret, package_name)
+                try:
+                    if app.config['config']['is_server']:
+                        from tool_expand import TorrentProcess
+                        TorrentProcess.receive_new_data(ret, package_name)
+                except: pass
+                
         except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
