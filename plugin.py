@@ -145,7 +145,7 @@ def ajax(sub):
                 import plex
                 ret['plex_server_hash'] = plex.Logic.get_server_hash()
             except Exception as e:
-                logger.error('not import plex')
+                logger.debug('not import plex')
             return jsonify(ret)
         elif sub == 'add_download':
             db_id = request.form['id']
