@@ -15,11 +15,8 @@ from framework import app, db, scheduler, path_app_root, SystemModelSetting
 from framework.job import Job
 from framework.util import Util
 from tool_base import ToolBaseNotify
-try:
-    from guessit import guessit
-except:
-    os.system('{pip} install guessit'.format(app.config['config']['pip']))
-    from guessit import guessit
+
+from guessit import guessit
 # 패키지
 from .plugin import logger, package_name
 from .model import ModelSetting, ModelMovieItem
